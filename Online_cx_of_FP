@@ -1,0 +1,11 @@
+select sid.bill_to_contact,
+Sid.shipping_address_name,sum(p_amount) as sales 
+from sales_invoice_data sid 
+left join res_company rc  
+on rc.id=sid.company_id  
+where  sid.customer_type ='Customer Sales' 
+and sid.bill_to_state ilike '%Goa%'
+and sid.parent_channel in ('e_commerce')
+and coalesce(rc.parent_id,rc.id)  in ('1','2')
+group by sid.bill_to_contact,Sid.shipping_address_name
+having sum(p_amount)>0
